@@ -646,7 +646,7 @@ setTimeout(observeAll, 400);
   });
   document.addEventListener('click', function firstPlay(){
     if (!playing) play();
-  });
+  }, { once: true });
 })();
 </script>
 

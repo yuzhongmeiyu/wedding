@@ -128,6 +128,32 @@
 
   @media (max-width: 900px) { .gallery { columns: 2; column-gap: 40px; } }
   @media (max-width: 550px) { .gallery { columns: 1; column-gap: 0; } .card { margin-bottom: 40px; } }
+
+  /* ═══════════ MUSIC PLAYER ═══════════ */
+  .music-btn {
+    position: fixed; bottom: 36px; right: 36px; z-index: 200;
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--bg, #F8F7F4);
+    border: 1px solid var(--hairline, #D8D5CE);
+    cursor: pointer; font-family: var(--serif-en);
+    font-size: 0.85rem; color: var(--muted, #7D7D7D);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.4s ease;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .music-btn:hover { color: #B8860B; border-color: #B8860B; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+  .music-btn.playing { color: #B8860B; border-color: #B8860B; }
+  .music-btn.playing::after {
+    content: '';
+    position: absolute; inset: -2px; border-radius: 50%;
+    border: 1px solid rgba(184,134,11,0.3);
+    animation: musicPulse 2s ease-in-out infinite;
+  }
+  @keyframes musicPulse {
+    0%,100% { transform: scale(1); opacity: 0; }
+    50%     { transform: scale(1.12); opacity: 1; }
+  }
+
 </style>
 </head>
 <body>
@@ -199,5 +225,9 @@ lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightb
 let tx = 0; lightbox.addEventListener('touchstart', e => { tx = e.changedTouches[0].screenX; });
 lightbox.addEventListener('touchend', e => { const dx = e.changedTouches[0].screenX - tx; if (Math.abs(dx) > 50) navLightbox(dx < 0 ? 1 : -1); });
 </script>
+
+<button class="music-btn" id="musicBtn" title="音乐">&#9835;</button>
+<audio id="bgMusic" loop src="Perfect.mp3"></audio>
+
 </body>
 </html>

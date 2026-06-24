@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我们的婚纱照</title>
+<style>
+  :root {
+    --bg: #fdf8f4;
+    --card-bg: #fff;
+    --text: #5d4e3d;
+    --text-light: #9b8c7c;
+    --accent: #c4a882;
+    --accent-soft: #e8d9c8;
+    --shadow: 0 2px 20px rgba(100, 80, 50, 0.07);
+    --radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Hero ──────────────────────── */
+  .hero {
+    text-align: center;
+    padding: 80px 24px 48px;
+  }
+  .hero h1 {
+    font-size: 2.4rem;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .hero .sub {
+    font-size: 1rem;
+    color: var(--text-light);
+    letter-spacing: 0.12em;
+  }
+  .hero .line {
+    width: 50px;
+    height: 1px;
+    background: var(--accent);
+    margin: 24px auto 0;
+  }
+
+  /* ── Gallery ──────────────────── */
+  .gallery {
+    columns: 3;
+    column-gap: 28px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
+  }
+
+  .card {
+    break-inside: avoid;
+    margin-bottom: 28px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--card-bg);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    position: relative;
+
+    /* fade-in initial state */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease, box-shadow 0.4s ease;
+  }
+  .card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(100, 80, 50, 0.13);
+  }
+  .card.visible:hover {
+    transform: translateY(-4px);
+  }
+  .card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.6s ease, filter 0.8s ease;
+    filter: brightness(0.95);
+  }
+  .card.visible img {
+    filter: brightness(1);
+  }
+  .card:hover img {
+    transform: scale(1.04);
+  }
+  .card .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.2));
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+  .card:hover .overlay {
+    opacity: 1;
+  }
+
+  /* ── Lightbox ─────────────────── */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(30, 24, 18, 0.95);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .lightbox.active {
+    display: flex;
+    opacity: 1;
+  }
+  .lightbox img {
+    max-width: 92vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    animation: lbFadeIn 0.4s ease;
+  }
+  @keyframes lbFadeIn {
+    from { opacity: 0; transform: scale(0.93); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .lb-close, .lb-nav {
+    position: fixed;
+    z-index: 1001;
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s;
+  }
+  .lb-close {
+    top: 24px;
+    right: 32px;
+    font-size: 2.2rem;
+    opacity: 0.5;
+  }
+  .lb-close:hover { opacity: 1; }
+  .lb-nav {
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2.4rem;
+    opacity: 0.4;
+    padding: 16px 20px;
+  }
+  .lb-nav:hover { opacity: 0.9; }
+  .lb-prev { left: 16px; }
+  .lb-next { right: 16px; }
+  .lb-counter {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.5);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    z-index: 1001;
+  }
+
+  /* ── Footer ───────────────────── */
+  .footer {
+    text-align: center;
+    padding: 0 20px 48px;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── Responsive ──────────────── */
+  @media (max-width: 1000px) {
+    .gallery { columns: 2; column-gap: 20px; padding: 0 24px 60px; }
+    .card { margin-bottom: 20px; }
+    .hero h1 { font-size: 2rem; }
+    .hero { padding: 56px 16px 36px; }
+  }
+  @media (max-width: 560px) {
+    .gallery { columns: 1; padding: 0 16px 48px; }
+    .card { margin-bottom: 20px; }
+    .hero h1 { font-size: 1.6rem; }
+    .lb-nav { font-size: 1.6rem; padding: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>我们的婚纱照</h1>
+  <p class="sub">执子之手 · 与子偕老</p>
+  <div class="line"></div>
+</div>
+
+<div class="gallery" id="gallery"></div>
+
+<div class="footer">♥ 一生一世一双人</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <span class="lb-close" id="lbClose">&times;</span>
+  <span class="lb-nav lb-prev" id="lbPrev">&#10094;</span>
+  <span class="lb-nav lb-next" id="lbNext">&#10095;</span>
+  <span class="lb-counter" id="lbCounter"></span>
+  <img src="" alt="" id="lbImg">
+</div>
+
+<script>
+const photos = [
+  "a12.jpg","a14.jpg","a17.jpg","a39__.jpg","a41.jpg","a45.jpg","a48.jpg","a55.jpg",
+  "b11.jpg","b18.jpg","b21.jpg","b23.jpg","b26.jpg","b30.jpg","b33.jpg","b42__.jpg",
+  "b53.jpg","b57.jpg","b6.jpg",
+  "c1.jpg","c14.jpg","c2.jpg","c20.jpg","c26.jpg","c31.jpg","c32.jpg","c43.jpg",
+  "c5.jpg","c50_.jpg","c55.jpg","c61.jpg","c62.jpg","c64.jpg","c9.jpg",
+  "d13.jpg","d23.jpg","d31.jpg","d32.jpg","d35.jpg","d36.jpg","d46.jpg","d52.jpg",
+  "d53_.jpg","d54.jpg","d55.jpg","d8.jpg","d9.jpg",
+  "e10__.jpg"
+];
+
+const gallery = document.getElementById('gallery');
+const lightbox = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+const lbCounter = document.getElementById('lbCounter');
+let currentIdx = 0;
+
+// ── Build gallery ──
+photos.forEach((src, i) => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <img src="${src}" alt="婚纱照 ${i+1}" loading="lazy">
+    <div class="overlay"></div>
+  `;
+  card.addEventListener('click', () => openLightbox(i));
+  gallery.appendChild(card);
+});
+
+// ── Intersection Observer: fade-in on scroll ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '40px' });
+
+document.querySelectorAll('.card').forEach(card => observer.observe(card));
+
+// ── Lightbox ──
+function openLightbox(idx) {
+  currentIdx = idx;
+  lbImg.src = photos[currentIdx];
+  lbCounter.textContent = `${currentIdx + 1} / ${photos.length}`;
+  lightbox.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function navLightbox(dir) {
+  currentIdx = (currentIdx + dir + photos.length) % photos.length;
+  lbImg.src = photos[currentIdx];
+  lbCounter.textContent = `${currentIdx + 1} / ${photos.length}`;
+}
+
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+document.getElementById('lbPrev').addEventListener('click', () => navLightbox(-1));
+document.getElementById('lbNext').addEventListener('click', () => navLightbox(1));
+
+document.addEventListener('keydown', e => {
+  if (!lightbox.classList.contains('active')) return;
+  if (e.key === 'Escape')     closeLightbox();
+  if (e.key === 'ArrowLeft')  navLightbox(-1);
+  if (e.key === 'ArrowRight') navLightbox(1);
+});
+
+lightbox.addEventListener('click', e => {
+  if (e.target === lightbox) closeLightbox();
+});
+
+// Touch swipe
+let touchStartX = 0;
+lightbox.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+lightbox.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].screenX - touchStartX;
+  if (Math.abs(dx) > 50) navLightbox(dx < 0 ? 1 : -1);
+});
+</script>
+
+</body>
+</html>

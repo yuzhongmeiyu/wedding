@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Our Wedding · Gallery</title>
-
 <style>
   :root {
     --bg: #F8F7F4;
@@ -24,39 +23,38 @@
     background: var(--bg);
     color: var(--text);
     -webkit-font-smoothing: antialiased;
-    font-size: 15px;
-    line-height: 1.7;
-    letter-spacing: 0.12em;
-    opacity: 0;
-    animation: bodyIn 1s 0.3s ease forwards;
+    font-size: 15px; line-height: 1.7; letter-spacing: 0.12em;
+    opacity: 0; animation: bodyIn 1s 0.3s ease forwards;
+    transition: background 0.5s ease;
   }
   @keyframes bodyIn { to { opacity: 1; } }
 
   /* ═══════════ NAV ═══════════ */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    padding: 28px clamp(24px, 6vw, 80px);
+    padding: 24px clamp(24px, 6vw, 80px);
     display: flex; justify-content: space-between; align-items: center;
     background: transparent;
+    transition: background 0.4s, backdrop-filter 0.4s;
   }
+  nav.scrolled { background: rgba(248,247,244,0.92); backdrop-filter: blur(12px); }
+  nav.dark-bg { background: rgba(42,42,42,0.92); backdrop-filter: blur(12px); }
   nav .logo {
-    font-family: var(--serif-en);
-    font-size: 1rem; font-weight: 400; font-style: italic;
-    color: rgba(255,255,255,0.85); letter-spacing: 0.08em;
-  }
-  nav .menu {
-    display: flex; gap: 32px;
-    font-family: var(--serif-en);
-    font-size: 0.78rem; letter-spacing: 0.15em;
-  }
-  nav .menu a {
-    color: rgba(255,255,255,0.7); text-decoration: none;
+    font-family: var(--serif-en); font-size: 1rem; font-style: italic;
+    color: rgba(255,255,255,0.85); letter-spacing: 0.08em; text-decoration: none;
     transition: color 0.4s;
+    cursor: pointer;
   }
+  nav .menu { display: flex; gap: 32px; font-family: var(--serif-en); font-size: 0.78rem; letter-spacing: 0.15em; }
+  nav .menu a { color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.4s; cursor: pointer; }
   nav .menu a:hover { color: #fff; }
   nav .menu a.active { color: #fff; }
 
-  /* ═══════════ HERO SLIDESHOW ═══════════ */
+  /* ═══════════ PAGE SECTIONS ═══════════ */
+  .page-section { display: none; }
+  .page-section.active { display: block; }
+
+  /* ═══════════ HOME: HERO SLIDESHOW ═══════════ */
   .hero {
     position: relative; height: 100vh; min-height: 600px;
     overflow: hidden; background: #1a1a1a;
@@ -84,132 +82,171 @@
     left: clamp(24px, 6vw, 80px); z-index: 2;
   }
   .hero-text .kicker {
-    font-family: var(--serif-en);
-    font-size: 0.72rem; font-style: italic; letter-spacing: 0.22em;
-    color: rgba(255,255,255,0.45); margin-bottom: 16px;
+    font-family: var(--serif-en); font-size: 0.72rem; font-style: italic;
+    letter-spacing: 0.22em; color: rgba(255,255,255,0.45); margin-bottom: 16px;
   }
   .hero-text h1 {
-    font-family: var(--serif-cn);
-    font-size: clamp(2.4rem, 5vw, 4rem);
-    font-weight: 200; letter-spacing: 0.18em;
-    color: #fff; line-height: 1.2;
+    font-family: var(--serif-cn); font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 200; letter-spacing: 0.18em; color: #fff; line-height: 1.2;
     text-shadow: 0 2px 30px rgba(0,0,0,0.3);
   }
   .hero-text .sub {
-    font-family: var(--serif-en);
-    font-size: 1rem; font-style: italic; letter-spacing: 0.1em;
-    color: rgba(255,255,255,0.5); margin-top: 14px;
+    font-family: var(--serif-en); font-size: 1rem; font-style: italic;
+    letter-spacing: 0.1em; color: rgba(255,255,255,0.5); margin-top: 14px;
   }
-
-  /* Slide indicators */
   .hero-dots {
     position: absolute; bottom: 40px; right: clamp(24px, 6vw, 80px);
     z-index: 2; display: flex; gap: 12px;
   }
   .hero-dots span {
     width: 6px; height: 6px; border-radius: 50%;
-    background: rgba(255,255,255,0.3);
-    cursor: pointer; transition: background 0.4s;
+    background: rgba(255,255,255,0.3); cursor: pointer; transition: background 0.4s;
   }
   .hero-dots span.active { background: rgba(255,255,255,0.9); }
 
   /* ═══════════ CURATED MOMENTS ═══════════ */
-  .section {
-    padding: clamp(80px, 12vh, 140px) clamp(24px, 6vw, 80px);
-    max-width: 1400px; margin: 0 auto;
-  }
-  .section-label {
-    font-family: var(--serif-en);
-    font-size: 0.7rem; font-style: italic; letter-spacing: 0.25em;
-    color: var(--muted); margin-bottom: 32px;
-  }
-  .section-title {
-    font-family: var(--serif-cn);
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
-    font-weight: 200; letter-spacing: 0.16em;
-    color: var(--text); margin-bottom: 56px;
-  }
+  .section { padding: clamp(80px, 12vh, 140px) clamp(24px, 6vw, 80px); max-width: 1400px; margin: 0 auto; }
+  .section-label { font-family: var(--serif-en); font-size: 0.7rem; font-style: italic; letter-spacing: 0.25em; color: var(--muted); margin-bottom: 32px; }
+  .section-title { font-family: var(--serif-cn); font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 200; letter-spacing: 0.16em; margin-bottom: 56px; }
 
-  /* 3x2 Grid */
-  .grid-3x2 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto auto;
-    gap: var(--gap);
-  }
+  .grid-3x2 { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: auto auto; gap: var(--gap); }
   .grid-3x2 .grid-item {
     position: relative; cursor: pointer; overflow: hidden;
     opacity: 0; transform: translateY(36px);
-    transition: opacity 0.9s cubic-bezier(0.22,0.61,0.36,1),
-                transform 0.9s cubic-bezier(0.22,0.61,0.36,1);
+    transition: opacity 0.9s cubic-bezier(0.22,0.61,0.36,1), transform 0.9s cubic-bezier(0.22,0.61,0.36,1);
   }
   .grid-3x2 .grid-item.visible { opacity: 1; transform: translateY(0); }
-  .grid-3x2 .grid-item img {
-    display: block; width: 100%; height: auto;
-    transition: transform 0.6s ease;
-  }
+  .grid-3x2 .grid-item img { display: block; width: 100%; height: auto; transition: transform 0.6s ease; }
   .grid-3x2 .grid-item:hover img { transform: scale(1.03); }
   .grid-3x2 .grid-item .tag {
     position: absolute; bottom: 16px; left: 16px;
-    font-family: var(--serif-en);
-    font-size: 0.65rem; font-style: italic; letter-spacing: 0.2em;
-    color: rgba(255,255,255,0); transition: color 0.45s ease;
-    pointer-events: none;
+    font-family: var(--serif-en); font-size: 0.65rem; font-style: italic; letter-spacing: 0.2em;
+    color: rgba(255,255,255,0); transition: color 0.45s ease; pointer-events: none;
   }
-  .grid-3x2 .grid-item:hover .tag {
-    color: rgba(255,255,255,0.85);
-    text-shadow: 0 1px 6px rgba(0,0,0,0.4);
-  }
+  .grid-3x2 .grid-item:hover .tag { color: rgba(255,255,255,0.85); text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
 
-  /* ═══════════ THREE SERIES ═══════════ */
-  .series {
-    padding: clamp(64px, 10vh, 100px) clamp(24px, 6vw, 80px);
-    max-width: 1400px; margin: 0 auto;
-    display: flex; flex-direction: column; gap: 52px;
-  }
-  .series .rule {
-    width: 100%; height: 1px; background: var(--hairline);
-  }
+  /* ═══════════ SERIES LINKS ═══════════ */
+  .series { padding: clamp(64px, 10vh, 100px) clamp(24px, 6vw, 80px); max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 52px; }
+  .series .rule { width: 100%; height: 1px; background: var(--hairline); }
   .series-item {
-    display: flex; align-items: baseline; gap: 40px;
-    text-decoration: none; color: var(--text);
-    padding: 20px 0;
-    transition: opacity 0.4s;
+    display: flex; align-items: baseline; gap: 40px; text-decoration: none; color: var(--text);
+    padding: 20px 0; transition: opacity 0.4s; cursor: pointer;
   }
   .series-item:hover { opacity: 0.55; }
-  .series-item .num {
-    font-family: var(--serif-en);
-    font-size: 0.65rem; font-style: italic;
-    color: var(--muted); letter-spacing: 0.2em;
-    min-width: 48px;
+  .series-item .num { font-family: var(--serif-en); font-size: 0.65rem; font-style: italic; color: var(--muted); letter-spacing: 0.2em; min-width: 48px; }
+  .series-item .name-en { font-family: var(--serif-en); font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; font-style: italic; letter-spacing: 0.06em; min-width: 280px; }
+  .series-item .name-cn { font-family: var(--serif-cn); font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 200; letter-spacing: 0.16em; }
+  .series-item .count { font-family: var(--serif-en); font-size: 0.65rem; font-style: italic; color: var(--muted); letter-spacing: 0.15em; margin-left: auto; }
+
+  /* ═══════════ SUB-PAGE HEADER ═══════════ */
+  .page-header {
+    padding: 160px clamp(24px, 6vw, 80px) 60px; max-width: 1000px;
   }
-  .series-item .name-en {
-    font-family: var(--serif-en);
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 300; font-style: italic;
-    letter-spacing: 0.06em; min-width: 280px;
+  .page-header .kicker { font-family: var(--serif-en); font-size: 0.7rem; font-style: italic; letter-spacing: 0.25em; margin-bottom: 16px; }
+  .page-header h1 { font-family: var(--serif-en); font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 300; font-style: italic; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .page-header .cn { font-family: var(--serif-cn); font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 200; letter-spacing: 0.2em; opacity: 0.7; }
+  .page-header .dek { margin-top: 24px; font-size: 0.85rem; color: var(--muted); letter-spacing: 0.08em; line-height: 2; max-width: 440px; }
+
+  /* ═══════════ GALLERY (Warmth) ═══════════ */
+  .gallery-wrap { padding: 0 clamp(24px, 6vw, 80px) 120px; max-width: 1500px; margin: 0 auto; }
+  .gallery { columns: 3; column-gap: var(--gap); }
+
+  /* ═══════════ GALLERY (Silence grid) ═══════════ */
+  .silence-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 72px; }
+  .silence-grid .scard { cursor: pointer; overflow: hidden; position: relative; opacity: 0; transform: translateY(36px); transition: opacity 0.8s cubic-bezier(0.22,0.61,0.36,1), transform 0.8s cubic-bezier(0.22,0.61,0.36,1); }
+  .silence-grid .scard.visible { opacity: 1; transform: translateY(0); }
+  .silence-grid .scard img { display: block; width: 100%; height: auto; filter: grayscale(0.08); transition: transform 0.6s ease, filter 0.6s ease; }
+  .silence-grid .scard:hover img { transform: scale(1.03); filter: grayscale(0); }
+  .silence-grid .scard .caption { margin-top: 12px; font-family: var(--serif-en); font-size: 0.65rem; font-style: italic; letter-spacing: 0.2em; color: var(--muted); text-align: right; }
+  .silence-grid .scard:nth-child(4) { grid-column: 2; } .silence-grid .scard:nth-child(5) { grid-column: 3; } .silence-grid .scard:nth-child(6) { grid-column: 4; }
+  .silence-grid .scard:nth-child(10) { grid-column: 2; } .silence-grid .scard:nth-child(11) { grid-column: 3; } .silence-grid .scard:nth-child(12) { grid-column: 4; }
+
+  /* ═══════════ CARD (Warmth style) ═══════════ */
+  .card {
+    break-inside: avoid; margin-bottom: var(--gap);
+    overflow: hidden; cursor: pointer; position: relative;
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.22,0.61,0.36,1), transform 0.8s cubic-bezier(0.22,0.61,0.36,1);
   }
-  .series-item .name-cn {
-    font-family: var(--serif-cn);
-    font-size: clamp(1.6rem, 3vw, 2.4rem);
-    font-weight: 200; letter-spacing: 0.16em;
+  .card.visible { opacity: 1; transform: translateY(0); }
+  .card img { display: block; width: 100%; height: auto; transition: transform 0.6s ease; }
+  .card:hover img { transform: scale(1.03); }
+  .card .hover-tint {
+    position: absolute; inset: 0; pointer-events: none;
+    display: flex; align-items: flex-end; padding: 48px 20px 18px;
+    background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0) 100%);
+    transition: background 0.5s ease;
   }
-  .series-item .count {
-    font-family: var(--serif-en);
-    font-size: 0.65rem; font-style: italic;
-    color: var(--muted); letter-spacing: 0.15em;
-    margin-left: auto;
+  .card:hover .hover-tint { background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.35) 100%); }
+  .card .hover-tint .info {
+    font-family: var(--serif-en); font-size: 0.7rem; font-style: italic; letter-spacing: 0.15em;
+    color: rgba(255,255,255,0); transition: color 0.5s ease;
   }
+  .card:hover .hover-tint .info { color: rgba(255,255,255,0.9); }
+
+  /* ═══════════ POETRY STYLES ═══════════ */
+  .segment { padding: 0 clamp(24px, 6vw, 80px); max-width: 1500px; margin: 0 auto 100px; }
+  .banner-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 80px; }
+  .banner-row img { width: 100%; height: auto; display: block; cursor: pointer; opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.22,0.61,0.36,1), transform 0.8s cubic-bezier(0.22,0.61,0.36,1); }
+  .banner-row img.visible { opacity: 1; transform: translateY(0); }
+  .green-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; margin-bottom: 48px; }
+  .green-grid .tile { cursor: pointer; overflow: hidden; opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.22,0.61,0.36,1), transform 0.8s cubic-bezier(0.22,0.61,0.36,1); }
+  .green-grid .tile.visible { opacity: 1; transform: translateY(0); }
+  .green-grid .tile img { display: block; width: 100%; height: auto; transition: transform 0.6s ease; }
+  .green-grid .tile:hover img { transform: scale(1.03); }
+  .film-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 60px 0; }
+  .film-frame { cursor: pointer; overflow: hidden; border: 16px solid #1A1A1A; opacity: 0; transform: translateY(40px); transition: opacity 0.9s cubic-bezier(0.22,0.61,0.36,1), transform 0.9s cubic-bezier(0.22,0.61,0.36,1); }
+  .film-frame.visible { opacity: 1; transform: translateY(0); }
+  .film-frame img { display: block; width: 100%; height: auto; filter: brightness(0.9); transition: transform 0.6s ease, filter 0.6s ease; }
+  .film-frame:hover img { transform: scale(1.04); filter: brightness(1); }
+  .poem-block { padding: 0 clamp(24px, 6vw, 80px); max-width: 800px; margin: 0 auto 40px; text-align: right; }
+  .poem-block .poem-title { font-family: var(--serif-en); font-size: 0.65rem; font-style: italic; letter-spacing: 0.25em; margin-bottom: 16px; }
+  .poem-block .poem-text { font-family: var(--serif-cn); font-size: 1.1rem; font-weight: 200; letter-spacing: 0.15em; line-height: 2.4; font-style: italic; }
+
+  /* ═══════════ QUOTE ═══════════ */
+  .quote-section { padding: clamp(48px, 8vh, 80px) clamp(24px, 12vw, 160px); max-width: 1000px; }
+  .quote-section .rule { width: 100%; height: 1px; background: var(--hairline); margin-bottom: 40px; }
+  .quote-section blockquote { font-family: var(--serif-cn); font-size: clamp(1.1rem, 2vw, 1.4rem); font-style: italic; letter-spacing: 0.06em; line-height: 2; }
+  .quote-section .attr { font-size: 11px; text-transform: uppercase; letter-spacing: 0.25em; color: #B8860B; margin-top: 20px; font-family: var(--serif-en); }
+
+  /* ═══════════ CLOSING ═══════════ */
+  .closing { padding: clamp(64px, 10vh, 100px) clamp(24px, 6vw, 80px) clamp(80px, 12vh, 140px); max-width: 720px; }
+  .closing .rule { width: 100%; height: 1px; background: var(--hairline); margin-bottom: 40px; }
+  .closing h2 { font-size: clamp(1.3rem, 2vw, 1.6rem); font-weight: 400; letter-spacing: 0.12em; line-height: 1.9; }
+  .closing p { margin-top: 16px; font-size: 0.9rem; color: var(--muted); letter-spacing: 0.08em; }
+
+  /* ═══════════ MUSIC ═══════════ */
+  .music-btn {
+    position: fixed; bottom: 36px; right: 36px; z-index: 200;
+    width: 46px; height: 46px; border-radius: 50%;
+    background: rgba(248,247,244,0.95); border: 1px solid var(--hairline);
+    cursor: pointer; font-family: var(--serif-en); font-size: 0.85rem;
+    color: var(--muted); display: flex; align-items: center; justify-content: center;
+    transition: all 0.4s ease; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .music-btn:hover { color: #B8860B; border-color: #B8860B; }
+  .music-btn.playing { color: #B8860B; border-color: #B8860B; }
+  .music-btn.playing::after {
+    content: ''; position: absolute; inset: -2px; border-radius: 50%;
+    border: 1px solid rgba(184,134,11,0.3);
+    animation: musicPulse 2s ease-in-out infinite;
+  }
+  @keyframes musicPulse { 0%,100% { transform: scale(1); opacity: 0; } 50% { transform: scale(1.12); opacity: 1; } }
+
+  /* ═══════════ LIGHTBOX ═══════════ */
+  .lightbox { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(10,9,7,0.96); justify-content: center; align-items: center; opacity: 0; transition: opacity 0.4s ease; }
+  .lightbox.active { display: flex; opacity: 1; }
+  .lightbox img { max-width: 90vw; max-height: 86vh; object-fit: contain; animation: lbIn 0.5s cubic-bezier(0.22,0.61,0.36,1); }
+  @keyframes lbIn { from { opacity: 0; transform: scale(0.9) translateY(24px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  .lb-close { position: fixed; top: 24px; right: 32px; z-index: 2002; font-size: 1.6rem; color: rgba(255,255,255,0.5); background: none; border: none; cursor: pointer; font-family: var(--serif-en); transition: color 0.3s; }
+  .lb-close:hover { color: #fff; }
+  .lb-nav { position: fixed; top: 50%; z-index: 2002; transform: translateY(-50%); font-size: 1.8rem; color: rgba(255,255,255,0.4); background: none; border: none; cursor: pointer; padding: 16px 20px; transition: color 0.3s; font-family: var(--serif-en); }
+  .lb-nav:hover { color: #fff; }
+  .lb-prev { left: 8px; } .lb-next { right: 8px; }
+  .lb-info { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.35); font-size: 11px; letter-spacing: 0.25em; z-index: 2002; font-family: var(--serif-en); }
 
   /* ═══════════ FOOTER ═══════════ */
-  footer {
-    padding: 40px clamp(24px, 6vw, 80px) 60px;
-    max-width: 1400px; margin: 0 auto;
-    display: flex; justify-content: space-between;
-    font-family: var(--serif-en);
-    font-size: 0.65rem; font-style: italic;
-    color: var(--muted); letter-spacing: 0.15em;
-  }
+  footer { padding: 40px clamp(24px, 6vw, 80px) 60px; max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; font-family: var(--serif-en); font-size: 0.65rem; font-style: italic; color: var(--muted); letter-spacing: 0.15em; }
 
   /* ═══════════ RESPONSIVE ═══════════ */
   @media (max-width: 800px) {
@@ -217,201 +254,389 @@
     .series-item { flex-wrap: wrap; gap: 8px; }
     .series-item .name-en { min-width: auto; font-size: 1.6rem; }
     nav .menu { gap: 16px; font-size: 0.7rem; }
+    .silence-grid, .banner-row, .green-grid, .film-row { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .silence-grid .scard:nth-child(n) { grid-column: auto; }
+    .quote-section { padding-left: 28px; padding-right: 28px; }
   }
   @media (max-width: 500px) {
     .grid-3x2 { grid-template-columns: 1fr; gap: 40px; }
+    .gallery { columns: 1; }
+    .silence-grid, .banner-row, .green-grid, .film-row { grid-template-columns: 1fr; gap: 32px; }
     .hero-text h1 { font-size: 2rem; }
+    .series-item .name-en { font-size: 1.4rem; }
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
-
-  /* ═══════════ MUSIC PLAYER ═══════════ */
-  .music-btn {
-    position: fixed; bottom: 36px; right: 36px; z-index: 200;
-    width: 46px; height: 46px; border-radius: 50%;
-    background: var(--bg, #F8F7F4);
-    border: 1px solid var(--hairline, #D8D5CE);
-    cursor: pointer; font-family: var(--serif-en);
-    font-size: 0.85rem; color: var(--muted, #7D7D7D);
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.4s ease;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-  }
-  .music-btn:hover { color: #B8860B; border-color: #B8860B; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-  .music-btn.playing { color: #B8860B; border-color: #B8860B; }
-  .music-btn.playing::after {
-    content: '';
-    position: absolute; inset: -2px; border-radius: 50%;
-    border: 1px solid rgba(184,134,11,0.3);
-    animation: musicPulse 2s ease-in-out infinite;
-  }
-  @keyframes musicPulse {
-    0%,100% { transform: scale(1); opacity: 0; }
-    50%     { transform: scale(1.12); opacity: 1; }
-  }
-
 </style>
 </head>
 <body>
 
 <!-- ═══════════ NAV ═══════════ -->
-<nav>
-  <a href="index.html" class="logo">Our Wedding</a>
+<nav id="nav">
+  <a class="logo" onclick="navigateTo('home')">Our Wedding</a>
   <div class="menu">
-    <a href="index.html" class="active">Home.</a>
-    <a href="#series">Portfolio.</a>
+    <a onclick="navigateTo('home')" data-page="home" class="active">Home.</a>
+    <a onclick="navigateTo('warmth')" data-page="warmth">Portfolio.</a>
   </div>
 </nav>
 
-<!-- ═══════════ HERO SLIDESHOW ═══════════ -->
-<section class="hero" id="hero">
-  <div class="slide active"></div>
-  <div class="slide"></div>
-  <div class="slide"></div>
-  <div class="slide"></div>
-  <div class="slide"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-text">
-    <p class="kicker">A Curated Collection</p>
-    <h1>我们<br>的婚纱照</h1>
-    <p class="sub">Timeless moments, forever held</p>
+<!-- ═══════════ HOME PAGE ═══════════ -->
+<section class="page-section active" id="page-home">
+
+  <div class="hero" id="hero">
+    <div class="slide active"></div>
+    <div class="slide"></div>
+    <div class="slide"></div>
+    <div class="slide"></div>
+    <div class="slide"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-text">
+      <p class="kicker">A Curated Collection</p>
+      <h1>我们<br>的婚纱照</h1>
+      <p class="sub">Timeless moments, forever held</p>
+    </div>
+    <div class="hero-dots" id="heroDots">
+      <span class="active"></span><span></span><span></span><span></span><span></span>
+    </div>
   </div>
-  <div class="hero-dots" id="heroDots">
-    <span class="active"></span><span></span><span></span><span></span><span></span>
+
+  <div class="section">
+    <p class="section-label">Curated Moments</p>
+    <h2 class="section-title">精选瞬间</h2>
+    <div class="grid-3x2" id="gridMoments">
+      <div class="grid-item"><img src="a12.jpg" alt="" loading="lazy"><span class="tag">warmth</span></div>
+      <div class="grid-item"><img src="d31.jpg" alt="" loading="lazy"><span class="tag">soft</span></div>
+      <div class="grid-item"><img src="b11.jpg" alt="" loading="lazy"><span class="tag">green</span></div>
+      <div class="grid-item"><img src="c14.jpg" alt="" loading="lazy"><span class="tag">pure</span></div>
+      <div class="grid-item"><img src="c43.jpg" alt="" loading="lazy"><span class="tag">timeless</span></div>
+      <div class="grid-item"><img src="d8.jpg" alt="" loading="lazy"><span class="tag">tender</span></div>
+    </div>
   </div>
+
+  <div class="series">
+    <div class="rule"></div>
+    <a class="series-item" onclick="navigateTo('warmth')"><span class="num">01</span><span class="name-en">Warmth</span><span class="name-cn">煦</span><span class="count">18 photographs</span></a>
+    <a class="series-item" onclick="navigateTo('silence')"><span class="num">02</span><span class="name-en">Silence</span><span class="name-cn">静</span><span class="count">15 photographs</span></a>
+    <a class="series-item" onclick="navigateTo('poetry')"><span class="num">03</span><span class="name-en">Poetry</span><span class="name-cn">诗</span><span class="count">15 photographs</span></a>
+    <div class="rule"></div>
+  </div>
+
+  <footer><span>Our Wedding Collection</span><span>执子之手 · 与子偕老</span></footer>
 </section>
 
-<!-- ═══════════ CURATED MOMENTS ═══════════ -->
-<section class="section">
-  <p class="section-label">Curated Moments</p>
-  <h2 class="section-title">精选瞬间</h2>
-  <div class="grid-3x2" id="gridMoments">
-    <div class="grid-item"><img src="a12.jpg" alt="" loading="lazy"><span class="tag">warmth</span></div>
-    <div class="grid-item"><img src="d31.jpg" alt="" loading="lazy"><span class="tag">soft</span></div>
-    <div class="grid-item"><img src="b11.jpg" alt="" loading="lazy"><span class="tag">green</span></div>
-    <div class="grid-item"><img src="c14.jpg" alt="" loading="lazy"><span class="tag">pure</span></div>
-    <div class="grid-item"><img src="c43.jpg" alt="" loading="lazy"><span class="tag">timeless</span></div>
-    <div class="grid-item"><img src="d8.jpg" alt="" loading="lazy"><span class="tag">tender</span></div>
+<!-- ═══════════ WARMTH PAGE ═══════════ -->
+<section class="page-section" id="page-warmth">
+  <div class="page-header">
+    <p class="kicker" style="color:#B8860B;">Chapter 01 · 18 photographs</p>
+    <h1>Warmth</h1>
+    <p class="cn">煦</p>
+    <p class="dek">暖光下的每一帧，都浸染着金色暖意。是灯下的凝视，是夕阳里的依偎，是只属于两个人的温度。</p>
   </div>
+  <div class="gallery-wrap"><div class="gallery" id="galleryWarmth"></div></div>
+  <footer><span>Our Wedding Collection</span><span>执子之手 · 与子偕老</span></footer>
 </section>
 
-<!-- ═══════════ THREE SERIES ═══════════ -->
-<section class="series" id="series">
-  <div class="rule"></div>
-  <a href="warmth.html" class="series-item">
-    <span class="num">01</span>
-    <span class="name-en">Warmth</span>
-    <span class="name-cn">煦</span>
-    <span class="count">18 photographs</span>
-  </a>
-  <a href="silence.html" class="series-item">
-    <span class="num">02</span>
-    <span class="name-en">Silence</span>
-    <span class="name-cn">静</span>
-    <span class="count">15 photographs</span>
-  </a>
-  <a href="poetry.html" class="series-item">
-    <span class="num">03</span>
-    <span class="name-en">Poetry</span>
-    <span class="name-cn">诗</span>
-    <span class="count">15 photographs</span>
-  </a>
-  <div class="rule"></div>
+<!-- ═══════════ SILENCE PAGE ═══════════ -->
+<section class="page-section" id="page-silence" style="background:#F5F5F3;">
+  <div class="page-header">
+    <p class="kicker" style="color:var(--muted);">Chapter 02 · 15 photographs</p>
+    <h1>Silence</h1>
+    <p class="cn">静</p>
+    <p class="dek">光影静默处，爱意悄然生长。这些低饱和的瞬间，诉说着无需言语的默契与深情。</p>
+  </div>
+  <div class="gallery-wrap"><div class="silence-grid" id="gallerySilence"></div></div>
+  <footer><span>Our Wedding Collection</span><span>执子之手 · 与子偕老</span></footer>
 </section>
 
-<footer>
-  <span>Our Wedding Collection</span>
-  <span>执子之手 · 与子偕老</span>
-</footer>
+<!-- ═══════════ POETRY PAGE ═══════════ -->
+<section class="page-section" id="page-poetry">
+  <div class="page-header" style="color:#C8C4BE;">
+    <p class="kicker" style="color:#8A8680;">Chapter 03 · 15 photographs</p>
+    <h1 style="color:#C8C4BE;">Poetry</h1>
+    <p class="cn">诗</p>
+    <p class="dek" style="color:#8A8680;">色彩在暗色上浮现，如同诗句在纸面绽放。绿野间的奔跑、纯白纱裙的回眸、暮色里的牵手——这是视觉的诗篇。</p>
+  </div>
+  <div class="segment"><div class="banner-row" id="brightBanner"></div></div>
+  <div class="poem-block"><p class="poem-title" style="color:#8A8680;">I. Pure</p><p class="poem-text" style="color:#C8C4BE;">白色是最纯粹的开始，<br>盛满所有的可能。</p></div>
+  <div class="segment"><div class="green-grid" id="greenGrid1"></div></div>
+  <div class="segment"><div class="green-grid" id="greenGrid2"></div></div>
+  <div class="segment"><div class="green-grid" id="greenGrid3"></div></div>
+  <div class="poem-block"><p class="poem-title" style="color:#8A8680;">II. Verdant</p><p class="poem-text" style="color:#C8C4BE;">在自然的怀抱里，<br>我们是最自由的模样。</p></div>
+  <div class="segment"><div class="film-row" id="darkFinale"></div></div>
+  <div class="poem-block" style="margin-bottom:120px;"><p class="poem-title" style="color:#8A8680;">III. Eternal</p><p class="poem-text" style="color:#C8C4BE;">光影交错间，<br>爱意悄然生长。</p></div>
+  <footer style="color:#8A8680;"><span>Our Wedding Collection</span><span>执子之手 · 与子偕老</span></footer>
+</section>
+
+<!-- ═══════════ MUSIC PLAYER ═══════════ -->
+<button class="music-btn" id="musicBtn" title="音乐">&#9835;</button>
+<audio id="bgMusic" loop src="Perfect.mp3"></audio>
+
+<!-- ═══════════ LIGHTBOX ═══════════ -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose">&times;</button>
+  <button class="lb-nav lb-prev" id="lbPrev">&#8249;</button>
+  <button class="lb-nav lb-next" id="lbNext">&#8250;</button>
+  <img src="" alt="" id="lbImg">
+  <span class="lb-info" id="lbInfo"></span>
+</div>
 
 <script>
-// ═══ Slideshow ═══
-(function(){
-  const slides = document.querySelectorAll('.hero .slide');
-  const dots = document.querySelectorAll('.hero-dots span');
-  let current = 0;
-  const total = slides.length;
+// ═══ DATA ═══
+const groups = {
+  warmth: ["a12.jpg","a14.jpg","a17.jpg","a39__.jpg","a41.jpg","a45.jpg","a48.jpg","a55.jpg","d13.jpg","d23.jpg","d31.jpg","d32.jpg","d35.jpg","d36.jpg","d46.jpg","d54.jpg","d8.jpg","d9.jpg"],
+  silence: ["c5.jpg","c9.jpg","c20.jpg","c26.jpg","c31.jpg","c32.jpg","c43.jpg","c50_.jpg","c64.jpg","d52.jpg","d53_.jpg","d55.jpg","e10__.jpg","b26.jpg","b53.jpg"],
+  poetry: ["c1.jpg","c14.jpg","c2.jpg","b11.jpg","b18.jpg","b21.jpg","b23.jpg","b30.jpg","b33.jpg","b42__.jpg","b57.jpg","b6.jpg","c55.jpg","c61.jpg","c62.jpg"]
+};
 
-  function showSlide(idx) {
-    slides[current].classList.remove('active');
-    dots[current].classList.remove('active');
-    current = (idx + total) % total;
-    slides[current].classList.add('active');
-    dots[current].classList.add('active');
+const captions = {
+  warmth: ["凝望","轻吻","温柔","浅笑","依偎","心动","低语","缱绻","相拥","时光","暖阳","柔情","温存","倾心","呢喃","缠绵","厮守","久安"],
+  silence: ["永恒","约定","白纱","凝眸","深情","此生","唯一","沉淀","岁月","长路","默然","相守","余晖","暮光","归处"],
+  poetry: ["纯白","誓言","初心","清风","绿茵","漫步","林间","芬芳","夏日","私语","晴空","微风","花间","翠影","沉淀","岁月","长路"]
+};
+
+// ═══ BUILD GALLERIES ═══
+// Warmth gallery
+(function(){
+  const c = document.getElementById('galleryWarmth');
+  if (!c) return;
+  groups.warmth.forEach((src, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.transitionDelay = (i % 6) * 0.04 + 's';
+    card.innerHTML = '<img src=\"' + src + '\" alt=\"\" loading=\"lazy\"><div class=\"hover-tint\"><span class=\"info\">' + String(i+1).padStart(2,'0') + ' · ' + captions.warmth[i] + '</span></div>';
+    card.addEventListener('click', function(){ openLightbox('warmth', i); });
+    c.appendChild(card);
+  });
+})();
+
+// Silence gallery
+(function(){
+  const c = document.getElementById('gallerySilence');
+  if (!c) return;
+  groups.silence.forEach((src, i) => {
+    const card = document.createElement('div');
+    card.className = 'scard';
+    card.style.transitionDelay = (i % 6) * 0.05 + 's';
+    card.innerHTML = '<img src=\"' + src + '\" alt=\"\" loading=\"lazy\"><p class=\"caption\">' + String(i+1).padStart(2,'0') + ' · ' + captions.silence[i] + '</p>';
+    card.addEventListener('click', function(){ openLightbox('silence', i); });
+    c.appendChild(card);
+  });
+})();
+
+// Poetry galleries
+(function(){
+  const b = document.getElementById('brightBanner');
+  if (b) {
+    [0,1,2].forEach(function(i){
+      const img = document.createElement('img');
+      img.src = groups.poetry[i]; img.alt = ''; img.loading = 'lazy';
+      img.addEventListener('click', function(){ openLightbox('poetry', i); });
+      b.appendChild(img);
+    });
+  }
+  for (var g=0; g<3; g++) {
+    var grid = document.getElementById('greenGrid'+(g+1));
+    if (!grid) continue;
+    for (var j=0; j<3; j++) {
+      (function(idx){
+        var tile = document.createElement('div');
+        tile.className = 'tile';
+        tile.innerHTML = '<img src=\"' + groups.poetry[idx] + '\" alt=\"\" loading=\"lazy\">';
+        tile.addEventListener('click', function(){ openLightbox('poetry', idx); });
+        grid.appendChild(tile);
+      })(3 + g*3 + j);
+    }
+  }
+  const d = document.getElementById('darkFinale');
+  if (d) {
+    [12,13,14].forEach(function(i, j){
+      var frame = document.createElement('div');
+      frame.className = 'film-frame';
+      frame.style.transitionDelay = j * 0.1 + 's';
+      frame.innerHTML = '<img src=\"' + groups.poetry[i] + '\" alt=\"\" loading=\"lazy\">';
+      frame.addEventListener('click', function(){ openLightbox('poetry', i); });
+      d.appendChild(frame);
+    });
+  }
+})();
+
+// ═══ NAVIGATION ═══
+var currentPage = 'home';
+var currentGroup = 'warmth';
+var currentIdx = 0;
+
+function navigateTo(page) {
+  document.querySelectorAll('.page-section').forEach(function(s){ s.classList.remove('active'); });
+  var target = document.getElementById('page-' + page);
+  if (target) target.classList.add('active');
+  currentPage = page;
+
+  // Update nav
+  document.querySelectorAll('nav .menu a').forEach(function(a){ a.classList.remove('active'); });
+  var navLink = document.querySelector('nav .menu a[data-page=\"' + (page === 'home' ? 'home' : 'warmth') + '\"]');
+  if (navLink) navLink.classList.add('active');
+
+  // Update body/nav background for poetry dark theme
+  var nav = document.getElementById('nav');
+  if (page === 'poetry') {
+    document.body.style.background = '#2A2A2A';
+    nav.classList.add('dark-bg');
+    nav.querySelector('.logo').style.color = '#C8C4BE';
+    nav.querySelectorAll('.menu a').forEach(function(a){ a.style.color = '#8A8680'; });
+    var active = nav.querySelector('.menu a.active');
+    if (active) active.style.color = '#C8C4BE';
+  } else if (page === 'silence') {
+    document.body.style.background = '#F5F5F3';
+    nav.classList.remove('dark-bg');
+    nav.querySelector('.logo').style.color = '#2B2B2B';
+    nav.querySelectorAll('.menu a').forEach(function(a){ a.style.color = '#7D7D7D'; });
+    var active = nav.querySelector('.menu a.active');
+    if (active) active.style.color = '#2B2B2B';
+  } else {
+    document.body.style.background = '#F8F7F4';
+    nav.classList.remove('dark-bg');
   }
 
-  let interval = setInterval(() => showSlide(current + 1), 5000);
+  // Reset nav color if on home page hero
+  if (page === 'home') {
+    updateNavAppearance();
+  }
 
-  dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => {
+  window.scrollTo(0, 0);
+
+  // Re-observe newly visible elements
+  setTimeout(observeAll, 300);
+}
+
+function updateNavAppearance() {
+  var nav = document.getElementById('nav');
+  if (currentPage !== 'home' || window.scrollY > 100) {
+    if (currentPage === 'poetry') {
+      nav.classList.add('dark-bg');
+    } else {
+      nav.classList.add('scrolled');
+      nav.querySelector('.logo').style.color = '#2B2B2B';
+      nav.querySelectorAll('.menu a').forEach(function(a){ a.style.color = '#7D7D7D'; });
+      var active = nav.querySelector('.menu a.active');
+      if (active) active.style.color = '#2B2B2B';
+    }
+  } else {
+    nav.classList.remove('scrolled');
+    nav.querySelector('.logo').style.color = 'rgba(255,255,255,0.85)';
+    nav.querySelectorAll('.menu a').forEach(function(a){
+      a.style.color = a.classList.contains('active') ? '#fff' : 'rgba(255,255,255,0.7)';
+    });
+  }
+}
+
+// ═══ HERO SLIDESHOW ═══
+(function(){
+  var slides = document.querySelectorAll('.hero .slide');
+  var dots = document.querySelectorAll('.hero-dots span');
+  if (!slides.length) return;
+  var current = 0, total = slides.length;
+  function showSlide(idx) {
+    slides[current].classList.remove('active');
+    if (dots[current]) dots[current].classList.remove('active');
+    current = (idx + total) % total;
+    slides[current].classList.add('active');
+    if (dots[current]) dots[current].classList.add('active');
+  }
+  var interval = setInterval(function(){ showSlide(current + 1); }, 5000);
+  dots.forEach(function(dot, i){
+    dot.addEventListener('click', function(){
       clearInterval(interval);
       showSlide(i);
-      interval = setInterval(() => showSlide(current + 1), 5000);
+      interval = setInterval(function(){ showSlide(current + 1); }, 5000);
     });
   });
 })();
 
-// ═══ Scroll reveal ═══
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.06, rootMargin: '60px' });
+// ═══ SCROLL (nav appearance) ═══
+window.addEventListener('scroll', function(){
+  if (currentPage === 'home') updateNavAppearance();
+});
 
-setTimeout(() => {
-  document.querySelectorAll('.grid-item').forEach(el => observer.observe(el));
-}, 500);
+// ═══ LIGHTBOX ═══
+var lb = document.getElementById('lightbox');
+var lbImg = document.getElementById('lbImg');
+var lbInfo = document.getElementById('lbInfo');
 
-// ═══ Nav scroll effect ═══
-const nav = document.querySelector('nav');
-const heroBottom = document.querySelector('.hero');
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 100) {
-    nav.style.background = 'rgba(248,247,244,0.92)';
-    nav.style.backdropFilter = 'blur(12px)';
-    nav.querySelector('.logo').style.color = 'var(--text)';
-    nav.querySelectorAll('.menu a').forEach(a => a.style.color = 'var(--muted)');
-    nav.querySelector('.menu a.active').style.color = 'var(--text)';
-  } else {
-    nav.style.background = 'transparent';
-    nav.style.backdropFilter = 'none';
-    nav.querySelector('.logo').style.color = 'rgba(255,255,255,0.85)';
-    nav.querySelectorAll('.menu a').forEach(a => {
-      a.style.color = a.classList.contains('active') ? '#fff' : 'rgba(255,255,255,0.7)';
+function openLightbox(group, idx) {
+  currentGroup = group;
+  currentIdx = idx;
+  updateLightbox();
+  lb.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lb.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function navLightbox(dir) {
+  var arr = groups[currentGroup];
+  currentIdx = (currentIdx + dir + arr.length) % arr.length;
+  updateLightbox();
+}
+
+function updateLightbox() {
+  var arr = groups[currentGroup];
+  lbImg.src = arr[currentIdx];
+  var cap = captions[currentGroup] ? captions[currentGroup][currentIdx] : '';
+  lbInfo.textContent = (currentIdx + 1) + ' / ' + arr.length + (cap ? ' · ' + cap : '');
+}
+
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+document.getElementById('lbPrev').addEventListener('click', function(){ navLightbox(-1); });
+document.getElementById('lbNext').addEventListener('click', function(){ navLightbox(1); });
+document.addEventListener('keydown', function(e){
+  if (!lb.classList.contains('active')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') navLightbox(-1);
+  if (e.key === 'ArrowRight') navLightbox(1);
+});
+lb.addEventListener('click', function(e){ if (e.target === lb) closeLightbox(); });
+var touchX = 0;
+lb.addEventListener('touchstart', function(e){ touchX = e.changedTouches[0].screenX; });
+lb.addEventListener('touchend', function(e){
+  var dx = e.changedTouches[0].screenX - touchX;
+  if (Math.abs(dx) > 50) navLightbox(dx < 0 ? 1 : -1);
+});
+
+// ═══ OBSERVER ═══
+function observeAll() {
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
     });
-  }
-});</script>
+  }, { threshold: 0.04, rootMargin: '60px' });
+  document.querySelectorAll('.page-section.active .card, .page-section.active .scard, .page-section.active .grid-item, .page-section.active .tile, .page-section.active .film-frame, .page-section.active .banner-row img').forEach(function(el){ observer.observe(el); });
+}
+setTimeout(observeAll, 400);
 
-
-<button class="music-btn" id="musicBtn" title="音乐">&#9835;</button>
-<audio id="bgMusic" loop src="Perfect.mp3"></audio>
-
-
-<button class="music-btn" id="musicBtn" title="音乐">&#9835;</button>
-<audio id="bgMusic" loop src="Perfect.mp3"></audio>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
+// ═══ MUSIC ═══
+(function(){
   var btn = document.getElementById('musicBtn');
   var audio = document.getElementById('bgMusic');
   if (!btn || !audio) return;
   var playing = false;
-  btn.addEventListener('click', function(e) {
+  audio.volume = 0.5;
+
+  function play() {
+    audio.play().then(function(){ playing = true; btn.classList.add('playing'); }).catch(function(){});
+  }
+  function pause() {
+    audio.pause(); playing = false; btn.classList.remove('playing');
+  }
+  btn.addEventListener('click', function(e){
     e.stopPropagation();
-    if (playing) { audio.pause(); playing = false; btn.classList.remove('playing'); }
-    else { audio.play().then(function(){ playing = true; btn.classList.add('playing'); }).catch(function(){}); }
+    if (playing) pause(); else play();
   });
-  document.addEventListener('click', function firstPlay() {
-    if (!playing) { audio.play().then(function(){ playing = true; btn.classList.add('playing'); }).catch(function(){}); }
+  document.addEventListener('click', function firstPlay(){
+    if (!playing) play();
   });
-});
+})();
 </script>
+
 </body>
 </html>

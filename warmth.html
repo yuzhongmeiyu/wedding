@@ -223,42 +223,29 @@ document.getElementById('lbNext').addEventListener('click', () => navLightbox(1)
 document.addEventListener('keydown', e => { if (!lightbox.classList.contains('active')) return; if (e.key === 'Escape') closeLightbox(); if (e.key === 'ArrowLeft') navLightbox(-1); if (e.key === 'ArrowRight') navLightbox(1); });
 lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
 let tx = 0; lightbox.addEventListener('touchstart', e => { tx = e.changedTouches[0].screenX; });
-lightbox.addEventListener('touchend', e => { const dx = e.changedTouches[0].screenX - tx; if (Math.abs(dx) > 50) navLightbox(dx < 0 ? 1 : -1); });
-
-// ═══ Music ═══
-(function(){
-  var btn = document.getElementById('musicBtn');
-  var audio = document.getElementById('bgMusic');
-  if (!btn || !audio) return;
-  var playing = false;
-
-  function play() {
-    audio.play().then(function() {
-      playing = true;
-      btn.classList.add('playing');
-    }).catch(function(){});
-  }
-  function pause() {
-    audio.pause();
-    playing = false;
-    btn.classList.remove('playing');
-  }
-
-  btn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    if (playing) pause(); else play();
-  });
-
-  // First click anywhere → auto-play
-  document.addEventListener('click', function firstPlay() {
-    if (!playing) play();
-  });
-})();
-</script>
-</script>
+lightbox.addEventListener('touchend', e => { const dx = e.changedTouches[0].screenX - tx; if (Math.abs(dx) > 50) navLightbox(dx < 0 ? 1 : -1); });</script>
 
 <button class="music-btn" id="musicBtn" title="音乐">&#9835;</button>
 <audio id="bgMusic" loop src="Perfect.mp3"></audio>
 
+
+<button class="music-btn" id="musicBtn" title="音乐">&#9835;</button>
+<audio id="bgMusic" loop src="Perfect.mp3"></audio>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('musicBtn');
+  var audio = document.getElementById('bgMusic');
+  if (!btn || !audio) return;
+  var playing = false;
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (playing) { audio.pause(); playing = false; btn.classList.remove('playing'); }
+    else { audio.play().then(function(){ playing = true; btn.classList.add('playing'); }).catch(function(){}); }
+  });
+  document.addEventListener('click', function firstPlay() {
+    if (!playing) { audio.play().then(function(){ playing = true; btn.classList.add('playing'); }).catch(function(){}); }
+  });
+});
+</script>
 </body>
 </html>

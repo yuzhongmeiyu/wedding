@@ -274,7 +274,7 @@
   <a class="logo" onclick="navigateTo('home')">Our Wedding</a>
   <div class="menu">
     <a onclick="navigateTo('home')" data-page="home" class="active">Home.</a>
-    <a onclick="navigateTo('warmth')" data-page="warmth">Portfolio.</a>
+    <a onclick="goPortfolio()" data-page="warmth">Portfolio.</a>
   </div>
 </nav>
 
@@ -469,9 +469,10 @@ function navigateTo(page) {
   if (target) target.classList.add('active');
   currentPage = page;
 
-  // Update nav
+  // Update nav highlight
   document.querySelectorAll('nav .menu a').forEach(function(a){ a.classList.remove('active'); });
-  var navLink = document.querySelector('nav .menu a[data-page=\"' + (page === 'home' ? 'home' : 'warmth') + '\"]');
+  var targetNav = (page === 'home') ? 'home' : 'warmth';
+  var navLink = document.querySelector('nav .menu a[data-page=\"' + targetNav + '\"]');
   if (navLink) navLink.classList.add('active');
 
   // Update body/nav background for poetry dark theme
@@ -506,18 +507,29 @@ function navigateTo(page) {
   setTimeout(observeAll, 300);
 }
 
+function goPortfolio() {
+  navigateTo('home');
+  setTimeout(function(){
+    var series = document.querySelector('.series');
+    if (series) series.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 200);
+}
+
 function updateNavAppearance() {
   var nav = document.getElementById('nav');
-  if (currentPage !== 'home' || window.scrollY > 100) {
-    if (currentPage === 'poetry') {
-      nav.classList.add('dark-bg');
-    } else {
-      nav.classList.add('scrolled');
-      nav.querySelector('.logo').style.color = '#2B2B2B';
-      nav.querySelectorAll('.menu a').forEach(function(a){ a.style.color = '#7D7D7D'; });
-      var active = nav.querySelector('.menu a.active');
-      if (active) active.style.color = '#2B2B2B';
-    }
+  if (currentPage === 'poetry') {
+    nav.classList.add('dark-bg');
+    return;
+  }
+  if (currentPage !== 'home') return; // sub-pages handled in navigateTo
+
+  // Home page: transparent hero, scrolled below = solid
+  if (window.scrollY > 100) {
+    nav.classList.add('scrolled');
+    nav.querySelector('.logo').style.color = '#2B2B2B';
+    nav.querySelectorAll('.menu a').forEach(function(a){
+      a.style.color = a.classList.contains('active') ? '#2B2B2B' : '#7D7D7D';
+    });
   } else {
     nav.classList.remove('scrolled');
     nav.querySelector('.logo').style.color = 'rgba(255,255,255,0.85)';

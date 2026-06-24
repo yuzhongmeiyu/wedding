@@ -388,43 +388,30 @@ window.addEventListener('scroll', () => {
       a.style.color = a.classList.contains('active') ? '#fff' : 'rgba(255,255,255,0.7)';
     });
   }
-});
-
-// ═══ Music ═══
-(function(){
-  var btn = document.getElementById('musicBtn');
-  var audio = document.getElementById('bgMusic');
-  if (!btn || !audio) return;
-  var playing = false;
-
-  function play() {
-    audio.play().then(function() {
-      playing = true;
-      btn.classList.add('playing');
-    }).catch(function(){});
-  }
-  function pause() {
-    audio.pause();
-    playing = false;
-    btn.classList.remove('playing');
-  }
-
-  btn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    if (playing) pause(); else play();
-  });
-
-  // First click anywhere → auto-play
-  document.addEventListener('click', function firstPlay() {
-    if (!playing) play();
-  });
-})();
-</script>
-</script>
+});</script>
 
 
 <button class="music-btn" id="musicBtn" title="音乐">&#9835;</button>
 <audio id="bgMusic" loop src="Perfect.mp3"></audio>
 
+
+<button class="music-btn" id="musicBtn" title="音乐">&#9835;</button>
+<audio id="bgMusic" loop src="Perfect.mp3"></audio>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('musicBtn');
+  var audio = document.getElementById('bgMusic');
+  if (!btn || !audio) return;
+  var playing = false;
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (playing) { audio.pause(); playing = false; btn.classList.remove('playing'); }
+    else { audio.play().then(function(){ playing = true; btn.classList.add('playing'); }).catch(function(){}); }
+  });
+  document.addEventListener('click', function firstPlay() {
+    if (!playing) { audio.play().then(function(){ playing = true; btn.classList.add('playing'); }).catch(function(){}); }
+  });
+});
+</script>
 </body>
 </html>

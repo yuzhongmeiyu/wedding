@@ -389,6 +389,37 @@ window.addEventListener('scroll', () => {
     });
   }
 });
+
+// ═══ Music ═══
+(function(){
+  var btn = document.getElementById('musicBtn');
+  var audio = document.getElementById('bgMusic');
+  if (!btn || !audio) return;
+  var playing = false;
+
+  function play() {
+    audio.play().then(function() {
+      playing = true;
+      btn.classList.add('playing');
+    }).catch(function(){});
+  }
+  function pause() {
+    audio.pause();
+    playing = false;
+    btn.classList.remove('playing');
+  }
+
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (playing) pause(); else play();
+  });
+
+  // First click anywhere → auto-play
+  document.addEventListener('click', function firstPlay() {
+    if (!playing) play();
+  });
+})();
+</script>
 </script>
 
 
